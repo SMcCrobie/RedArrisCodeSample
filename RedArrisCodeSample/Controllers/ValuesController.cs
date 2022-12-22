@@ -11,7 +11,7 @@ namespace RedArrisCodeSample.Controllers
 
         private readonly IHttpClientFactory _httpClientFactory;
         private static readonly string BASE_URI = "https://cloud.iexapis.com/v1/data/CORE/";
-        private static readonly string AUTH_TOKEN = "";
+        private static readonly string IEX_AUTH_TOKEN = "";//REQUIRED FOR ALL APIS
         private const string DATE_MIN = "0001-01-01";
         private const string DATE_MAX = "3001-01-01";
 
@@ -33,7 +33,7 @@ namespace RedArrisCodeSample.Controllers
             var historicalPriceResponses = await RetrieveHistoricalDataAsync(StockSymbol, FromDate, ToDate);
 
 
-            return Ok(historicalPriceResponses.OrderBy(hpr => hpr.date).Select(hpr => (hpr.close - hpr.open).ToString()));
+            return Ok(historicalPriceResponses.Select(hpr => (hpr.close - hpr.open).ToString()));
         }
 
 
@@ -55,24 +55,18 @@ namespace RedArrisCodeSample.Controllers
             var historicalPriceResponsesTask = RetrieveHistoricalDataAsync(StockSymbol, FromDate, ToDate);
             var benchmarkHistoricalPriceResponsesTask = RetrieveHistoricalDataAsync(BenchmarkStockSymbol, FromDate, ToDate) ;
 
-            
-            var finishedTask = await Task.WhenAny(historicalPriceResponsesTask, benchmarkHistoricalPriceResponsesTask);
+            var historicalPriceResponses = await historicalPriceResponsesTask;
+            var benchmarkHistoricalPriceResponses = await benchmarkHistoricalPriceResponsesTask;
 
-            if(finishedTask == historicalPriceResponsesTask)
-            {
-                //do that math
-            }
+            //Calculate alpha
+            var stockReturn = (historicalPriceResponses.LastOrDefault()?.close - historicalPriceResponses.FirstOrDefault()?.open) / historicalPriceResponses.FirstOrDefault()?.open;
+            var benchmarkStockReturn = (benchmarkHistoricalPriceResponses.LastOrDefault()?.close - benchmarkHistoricalPriceResponses.FirstOrDefault()?.open) / benchmarkHistoricalPriceResponses.FirstOrDefault()?.open;
 
-            if(finishedTask == benchmarkHistoricalPriceResponsesTask)
-            {
-                //do that math
-            }
-            // need a loop
+            //simplified alpha calculation, would use a finance resource to deduce how exactly they want this done
+            //or pull the formula from their excel
+            var alpha = (stockReturn - benchmarkStockReturn) * 100;
 
-            
-
-
-            return Ok();
+            return alpha != null ? Ok(Math.Round((decimal)alpha, 2).ToString() + "%") : StatusCode(500);
         }
 
         private ActionResult? ValidateAndFormatDates(ref string ToDate, ref string FromDate)
@@ -97,10 +91,11 @@ namespace RedArrisCodeSample.Controllers
 
         //TODO improve resouce use to test validation, Couldnt find anything in IEX core
         //Potentially our own list of valid Stock Tickers
+        //https://cloud.iexapis.com/beta/ref-data/symbols in beta
         private async Task<IActionResult?> ValidateStockSymbolAsync(string StockSymbol)
         {
-            var uri = $"{BASE_URI}COMPANY/{StockSymbol}?token={AUTH_TOKEN}";
-            var httpClient = _httpClientFactory.CreateClient();
+            var uri = $"{BASE_URI}COMPANY/{StockSymbol}?token={IEX_AUTH_TOKEN}";
+            var httpClient = _httpClientFactory.CreateClient();//unsure if this is the best pattern, creating it every call, would like to discuss
             var response = await httpClient.GetAsync(uri);
             if (response.IsSuccessStatusCode)
             {
@@ -118,7 +113,7 @@ namespace RedArrisCodeSample.Controllers
 
         private IActionResult? ValidateIexAuthToken()
         {
-            return string.IsNullOrEmpty(AUTH_TOKEN) ?
+            return string.IsNullOrEmpty(IEX_AUTH_TOKEN) ?
                     StatusCode(500, "App is missing IEX auth token, APIs will not work")
                    : null;
         }
@@ -126,13 +121,13 @@ namespace RedArrisCodeSample.Controllers
 
         private async Task<List<HistoricalPriceResponse>> RetrieveHistoricalDataAsync(string StockSymbol, string FromDate, string ToDate)
         {
-            var uri = $"{BASE_URI}HISTORICAL_PRICES/{StockSymbol}?token={AUTH_TOKEN}&from={FromDate}&to={ToDate}";
-            var httpClient = _httpClientFactory.CreateClient();
+            var uri = $"{BASE_URI}HISTORICAL_PRICES/{StockSymbol}?token={IEX_AUTH_TOKEN}&from={FromDate}&to={ToDate}";
+            var httpClient = _httpClientFactory.CreateClient();//unsure if this is the best pattern, creating it every call, would like to discuss
             var response = await httpClient.GetAsync(uri);
             if (response.IsSuccessStatusCode)
             {
                 var responseBody = await response.Content.ReadAsStringAsync();
-                List<HistoricalPriceResponse> historicalPriceResponses = JsonConvert.DeserializeObject<List<HistoricalPriceResponse>>(responseBody);
+                List<HistoricalPriceResponse> historicalPriceResponses = JsonConvert.DeserializeObject<List<HistoricalPriceResponse>>(responseBody).OrderBy(hpr => hpr.date).ToList();
                 return historicalPriceResponses ?? new List<HistoricalPriceResponse>();
             }
            
