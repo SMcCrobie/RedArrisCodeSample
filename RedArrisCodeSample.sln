@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.33027.164
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RedArrisCodeSample", "RedArrisCodeSample\RedArrisCodeSample.csproj", "{46949200-6967-4495-AF0C-999279F72BC4}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{46949200-6967-4495-AF0C-999279F72BC4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{46949200-6967-4495-AF0C-999279F72BC4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{46949200-6967-4495-AF0C-999279F72BC4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{46949200-6967-4495-AF0C-999279F72BC4}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {89C53C75-B394-4438-BE10-6F4DA7F35EC3}
+	EndGlobalSection
+EndGlobal

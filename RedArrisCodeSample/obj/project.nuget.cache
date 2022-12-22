@@ -1,0 +1,18 @@
+{
+  "version": 2,
+  "dgSpecHash": "c0GPWwGKlsqEpHLFOLgX4/hTVQvwN45Sl6b6SrHtMWwMKsB3llf3PZvcdZ0fRX+rrDJ6iCquD9zvX4lK//1MuQ==",
+  "success": true,
+  "projectFilePath": "C:\\Users\\Sean McCrobie\\RiderProjects\\RedArrisCodeSample\\RedArrisCodeSample\\RedArrisCodeSample.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\Sean McCrobie\\.nuget\\packages\\launchdarkly.eventsource\\4.2.0\\launchdarkly.eventsource.4.2.0.nupkg.sha512",
+    "C:\\Users\\Sean McCrobie\\.nuget\\packages\\launchdarkly.logging\\1.0.1\\launchdarkly.logging.1.0.1.nupkg.sha512",
+    "C:\\Users\\Sean McCrobie\\.nuget\\packages\\microsoft.extensions.logging.abstractions\\3.1.9\\microsoft.extensions.logging.abstractions.3.1.9.nupkg.sha512",
+    "C:\\Users\\Sean McCrobie\\.nuget\\packages\\newtonsoft.json\\13.0.2\\newtonsoft.json.13.0.2.nupkg.sha512",
+    "C:\\Users\\Sean McCrobie\\.nuget\\packages\\polly\\7.2.3\\polly.7.2.3.nupkg.sha512",
+    "C:\\Users\\Sean McCrobie\\.nuget\\packages\\system.runtime.compilerservices.unsafe\\6.0.0\\system.runtime.compilerservices.unsafe.6.0.0.nupkg.sha512",
+    "C:\\Users\\Sean McCrobie\\.nuget\\packages\\system.text.encodings.web\\6.0.0\\system.text.encodings.web.6.0.0.nupkg.sha512",
+    "C:\\Users\\Sean McCrobie\\.nuget\\packages\\system.text.json\\6.0.4\\system.text.json.6.0.4.nupkg.sha512",
+    "C:\\Users\\Sean McCrobie\\.nuget\\packages\\vslee.iexsharp\\2.9.4\\vslee.iexsharp.2.9.4.nupkg.sha512"
+  ],
+  "logs": []
+}
