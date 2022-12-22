@@ -1,5 +1,9 @@
 # RedArrisCodeSample
 Simple WebApp with 2 APIs
+
+/RedArrisCodeSample/Controllers/ValuesController.cs requires a auth token to IEX to be filled in to correctly run
+
+
 API formats
 
 GetReturn example
